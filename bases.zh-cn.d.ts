@@ -200,6 +200,13 @@ export type ExtractConfig = {
 	 * - `wem`，资源文件中打包的原始格式
 	 */
 	readonly format: 'wav' | 'ogg' | 'wem',
+	/**
+	 * 是否转换SFX音频格式
+	 * - 默认值：false
+	 * - `false`，SFX只输出原始WEM格式
+	 * - `true`，SFX使用与VO相同的`format`配置进行格式转换
+	 */
+	readonly convertSFX: boolean,
 
 	/**
 	 * 资源文件来源
@@ -267,11 +274,41 @@ export type ExtractConfig = {
 	 */
 	readonly dirCache?: string;
 	/**
-	 * 语音文件导出目录，存放已匹配事件的语音文件。可能的值：
+	 * 语音WEM文件导出目录。可能的值：
 	 * - `{ExtractConfig.dirExportVoice}`
 	 * - `{项目目录}/@1voice`
 	 */
 	readonly dirExportVoice?: string;
+	/**
+	 * 语音WAV转换文件导出目录。可能的值：
+	 * - `{ExtractConfig.dirConversionVoice}`
+	 * - `{项目目录}/@1wav`
+	 */
+	readonly dirConversionVoice?: string;
+	/**
+	 * 音效WEM文件导出目录。可能的值：
+	 * - `{ExtractConfig.dirExportSoundEffect}`
+	 * - `{项目目录}/@1sfx`
+	 */
+	readonly dirExportSoundEffect?: string;
+	/**
+	 * 音效WAV转换文件导出目录（仅当`convertSFX`为`true`时生效）。可能的值：
+	 * - `{ExtractConfig.dirConversionSoundEffect}`
+	 * - `{项目目录}/@1sfx-wav`
+	 */
+	readonly dirConversionSoundEffect?: string;
+	/**
+	 * 语音事件JSON导出目录。可能的值：
+	 * - `{ExtractConfig.dirExportVoiceEvent}`
+	 * - `{项目目录}/events/vo`
+	 */
+	readonly dirExportVoiceEvent?: string;
+	/**
+	 * 音效事件JSON导出目录。可能的值：
+	 * - `{ExtractConfig.dirExportSoundEffectEvent}`
+	 * - `{项目目录}/events/sfx`
+	 */
+	readonly dirExportSoundEffectEvent?: string;
 	/**
 	 * 听写模板文件导出目录，存放已匹配事件的语音文件。可能的值：
 	 * - `{ExtractConfig.dirExportDict}`

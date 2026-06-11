@@ -39,9 +39,9 @@ export default function parseRuncom(rawsRuncom = []) {
 			const [slot, idSkin, title, profile] = rawRuncom.split('|');
 
 			const champion = championsEN[Number(slot)] || championsEN.find(c => c.slot.toLowerCase() == slot.toLowerCase());
-			if(!champion) { throw '找不到对应英雄'; }
+			if(!champion) { throw `找不到对应英雄: slot="${slot}", 配置="${rawRuncom}"`; }
 			const skin = champion.skins[idSkin];
-			if(!skin) { throw '找不到对应皮肤'; }
+			if(!skin) { throw `找不到对应皮肤: slot="${slot}"(英雄:${champion.name}), skinId="${idSkin}", 配置="${rawRuncom}"`; }
 			// if(!champion) { throw TLogError('parse-runcom', { rc, slot: slotRC }, 'unknown-champion'); }
 
 

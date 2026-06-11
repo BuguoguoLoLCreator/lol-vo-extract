@@ -149,6 +149,9 @@ export default function extractAudios(filesBank, E) {
 		const pathParsedBank = parsePath(fileBank);
 		const baseBank = pathParsedBank.base;
 
+		const isSFX = baseBank.includes('sfx');
+		const needConvert = !isSFX || E.convertSFX;
+
 		const dirCacheAudioWEM = resolvePath(E.dirCacheAudio, `[wem]${baseBank}`);
 		const dirCacheAudioWAV = resolvePath(E.dirCacheAudio, `[wav]${baseBank}`);
 		const countCacheAudioWEM = existsSync(dirCacheAudioWEM) ? readdirSync(dirCacheAudioWEM).length : 0;
@@ -158,15 +161,16 @@ export default function extractAudios(filesBank, E) {
 		if(
 			!E.forceExtractFile
 			&& (false
+				|| (isSFX && !E.convertSFX && countCacheAudioWEM > 0)
 				|| (E.format == 'wem' && countCacheAudioWEM > 0)
 				|| (E.format == 'wav' && countCacheAudioWEM > 0 && countCacheAudioWEM == countCacheAudioWAV)
 				|| (E.format == 'ogg' && countCacheAudioWEM > 0 && countCacheAudioWEM == countCacheAudioOGG)
 			)
-		) { return GG.infoD(...TS('extract-audio.', 'check-cache', 'skip-found-cache')); }
+		) { GG.infoD(...TS('extract-audio.', 'check-cache', 'skip-found-cache')); continue; }
 
 
 		emptyDirSync(dirCacheAudioWEM);
-		emptyDirSync(dirCacheAudioWAV);
+		if(needConvert) { emptyDirSync(dirCacheAudioWAV); }
 
 
 		GG.infoU(...TS('extract-audio:extract-wem', { name: baseBank }, '...'));
@@ -174,6 +178,13 @@ export default function extractAudios(filesBank, E) {
 		extractWEM(fileBank, dirCacheAudioWEM);
 
 		GG.infoD(...TS('extract-audio:extract-wem', { name: baseBank }, '✔'));
+
+
+		// SFX without convertSFX: only keep WEM, skip format conversion
+		if(isSFX && !E.convertSFX) {
+			GG.infoD(...TS('extract-audio:extract', { format: 'wem', name: baseBank }, '✔'), '(sfx: skip conversion)');
+			continue;
+		}
 
 
 		GG.infoU(...TS('extract-audio:extract', { format: E.format, name: baseBank }, '...'));
@@ -198,7 +209,7 @@ export default function extractAudios(filesBank, E) {
 					}
 				}
 				else {
-					GG.errorD(...TS('extract-audio:extract', { format: E.format, name: baseBank, path: E.fileRExtractorConsole }, 'unknown-rextractor'));
+					GG.errorD(...TS('extract-audio:extract', { format: E.format, name: baseBank, path: E.fileVGMStreamCLI }, 'unknown-rextractor'));
 				}
 			}
 

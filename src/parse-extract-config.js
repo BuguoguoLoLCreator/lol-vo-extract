@@ -96,7 +96,7 @@ export default function parseExtractConfig(runcoms) {
 
 
 			E.nameDirCache = `${idFull}@${E.slot}${E.noRegionInExportFileName ? '' : `@${region}`}@${lang}@${timeExtract.format('YYMMww')}`;
-			E.nameDirVoiceExport = `${idFull}@${skin.id == 0 ? `${champion.title} ${champion.name}` : `${skin.name}`?.replace(/[:"]/g, '')}${E.noRegionInExportFileName ? '' : `@${region}`}@${lang}`;
+			E.nameDirVoiceExport = `${idFull}`;
 			E.nameFileDictation = `${E.nameDirVoiceExport}@${timeExtract.format('DDHHmmss')}`;
 			E.titleFileDictation = `[${idFull}] ${champion.slot}:${champion.name} ==> ${skin.id == 0 ? `${championFallback.title}:${champion.title}` : `${skinFallback.name}:${skin.name}`}`;
 		}
@@ -104,11 +104,16 @@ export default function parseExtractConfig(runcoms) {
 			E.nameDirCache = `${E.slot}@${timeExtract.format('YYMMww')}`;
 			E.nameFileDictation = `${E.slot}@${E.title}@${timeExtract.format('HHmmss')}`;
 			E.titleFileDictation = `[${E.slot}] ${E.title}`;
-			E.nameDirVoiceExport = `${E.slot}@${E.title}@${lang}`;
+			E.nameDirVoiceExport = `${E.slot}`;
 		}
 
 
 		E.dirExportVoice = E.dirExportVoice ?? resolvePath(dirWorking, '@1voice'); ensureDirSync(E.dirExportVoice);
+		E.dirConversionVoice = E.dirConversionVoice ?? resolvePath(dirWorking, '@1wav'); ensureDirSync(E.dirConversionVoice);
+		E.dirExportSoundEffect = E.dirExportSoundEffect ?? resolvePath(dirWorking, '@1sfx'); ensureDirSync(E.dirExportSoundEffect);
+		E.dirConversionSoundEffect = E.dirConversionSoundEffect ?? resolvePath(dirWorking, '@1sfx-wav'); ensureDirSync(E.dirConversionSoundEffect);
+		E.dirExportVoiceEvent = E.dirExportVoiceEvent ?? resolvePath(dirWorking, 'events', 'vo'); ensureDirSync(E.dirExportVoiceEvent);
+		E.dirExportSoundEffectEvent = E.dirExportSoundEffectEvent ?? resolvePath(dirWorking, 'events', 'sfx'); ensureDirSync(E.dirExportSoundEffectEvent);
 		E.dirExportDict = E.dirExportDict ?? resolvePath(dirWorking, '@2dict'); ensureDirSync(E.dirExportDict);
 
 
